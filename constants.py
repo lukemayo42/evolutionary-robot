@@ -1,7 +1,7 @@
 import numpy as np
 
-backLegAmplitude = np.pi/3
-backLegFrequency = 9
+backLegAmplitude = np.pi/4
+backLegFrequency = 10
 backLegPhaseOffset = 0
 
 frontLegAmplitude = np.pi/6
