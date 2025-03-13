@@ -8,13 +8,15 @@ import time
 import pyrosim.pyrosim as pyrosim
 
 class SIMULATION:
-    def __init__(self):
-        self.world = WORLD()
+    def __init__(self, value):
+        self.value = value
+        self.world = WORLD(value)
         self.robot = ROBOT()
         
     def Run(self):
         for i in range(0, 1000):
-            time.sleep((1/60))
+            if self.value == "GUI":
+                time.sleep((1/60))
             p.stepSimulation()
             self.robot.Sense(i)
             self.robot.Think()
@@ -23,4 +25,7 @@ class SIMULATION:
 
     def __del__(self):
         p.disconnect()
+
+    def Get_Fitness(self):
+        self.robot.Get_Fitness()
 

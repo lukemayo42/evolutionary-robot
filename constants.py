@@ -7,3 +7,5 @@ backLegPhaseOffset = 0
 frontLegAmplitude = np.pi/6
 frontLegFrequency = 9
 frontLegPhaseOffset = np.pi/6
+
+numberOfGenerations = 20
