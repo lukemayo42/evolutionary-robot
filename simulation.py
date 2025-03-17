@@ -8,14 +8,14 @@ import time
 import pyrosim.pyrosim as pyrosim
 
 class SIMULATION:
-    def __init__(self, value):
-        self.value = value
-        self.world = WORLD(value)
-        self.robot = ROBOT()
+    def __init__(self, directOrGUI, solutionID):
+        self.directOrGUI = directOrGUI
+        self.world = WORLD(directOrGUI)
+        self.robot = ROBOT(solutionID)
         
     def Run(self):
         for i in range(0, 1000):
-            if self.value == "GUI":
+            if self.directOrGUI == "GUI":
                 time.sleep((1/60))
             p.stepSimulation()
             self.robot.Sense(i)

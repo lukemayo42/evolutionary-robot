@@ -8,4 +8,5 @@ frontLegAmplitude = np.pi/6
 frontLegFrequency = 9
 frontLegPhaseOffset = np.pi/6
 
-numberOfGenerations = 20
+numberOfGenerations = 10
+populationSize = 10
