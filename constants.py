@@ -6,7 +6,12 @@ backLegPhaseOffset = 0
 
 frontLegAmplitude = np.pi/6
 frontLegFrequency = 9
-frontLegPhaseOffset = np.pi/6
+frontLegPhaseOffset = 0
 
-numberOfGenerations = 10
-populationSize = 10
+numberOfGenerations = 15
+populationSize = 9
+
+numSensorNeurons = 4
+numMotorNeurons = 8
+
+motorJointRange = 0.3

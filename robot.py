@@ -6,11 +6,13 @@ from motor import MOTOR
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import time
+import constants as c
 
 class ROBOT:
     def __init__(self, solutionID):
         self.motors = {}
         self.solutionID = solutionID
+        time.sleep(0.02)
         self.robotId = p.loadURDF("robot.urdf")
         self.nn = NEURAL_NETWORK(f"brain{solutionID}.nndf")
         os.system(f"del brain{solutionID}.nndf")
@@ -36,13 +38,15 @@ class ROBOT:
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName).encode("utf-8")
-                desiredAngle = self.nn.Get_Value_Of(neuronName)
+                desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
             
                 self.motors.get(jointName).Set_Value(self.robotId, desiredAngle)
                 jointName = jointName.decode("utf-8")
                 #print(f"{neuronName} {jointName} {desiredAngle}")
         #for i in self.motors:
-        #    self.motors[i].Set_Value(self.robotId, t)
+        #    self.motors[i].Set_Value(self.robotId, t)  
+    
+
 
     def Think(self):
         self.nn.Update()
