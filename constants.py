@@ -9,7 +9,7 @@ frontLegFrequency = 9
 frontLegPhaseOffset = 0
 
 numberOfGenerations = 15
-populationSize = 9
+populationSize = 10
 
 numSensorNeurons = 4
 numMotorNeurons = 8

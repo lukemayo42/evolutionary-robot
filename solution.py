@@ -21,7 +21,8 @@ class SOLUTION:
     def Wait_For_Simulation_To_End(self):
         filename = f"fitness{self.myID}.txt"
         while not os.path.exists(filename):
-            time.sleep(0.01)
+            time.sleep(0.02)
+        time.sleep(0.02)
         file = open(filename, "r")
         self.fitness = float(file.readline())
         file.close()
@@ -37,7 +38,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Generate_Body(self):
-        pyrosim.Start_URDF("robot.urdf")
+        pyrosim.Start_URDF(f"robot{self.myID}.urdf")
         pyrosim.Send_Cube(name="Torso", pos=[0, 0, 1], size=[1, 1, 1])
         
         pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [0,0.5,1], jointAxis = "1 0 0")
