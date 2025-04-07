@@ -7,6 +7,7 @@ from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import time
 import constants as c
+import numpy as np
 
 class ROBOT:
     def __init__(self, solutionID):
@@ -54,12 +55,40 @@ class ROBOT:
         #self.nn.Print()
 
     def Get_Fitness(self):
+        torso_penalty = 0
+        for i in self.sensors["Torso"].values:
+            if i == 1:
+                torso_penalty = 5
+                
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
         basePosition = basePositionAndOrientation[0]
+        orientation = basePositionAndOrientation[1]
         xPosition = basePosition[0]
+        orientationEuler = p.getEulerFromQuaternion(orientation)
+        roll = orientationEuler[0]
+        pitch = orientationEuler[1]
+
+
+        roll_penalty = 0
+        if abs(roll) > .7:
+            roll_penalty = 5
+        pitch_penalty = 0
+        if abs(pitch) > .7:
+            pitch_penalty = 5
+        #minimize this function, the xPosition of the robot, add 100 if the torso sensor ever goes off, meaning that it touches the ground at any point
+        # because if this is the case the robot has likely flipped over.
+        fitness = xPosition + torso_penalty + roll_penalty + pitch_penalty
+
+        # punish high angulation
         #print(xCoordinateOfLinkZero)
         f = open(f"tmp{self.solutionID}.txt", "w")
-        f.write(str(xPosition))
+        f.write(str(fitness))
         f.close()
         os.system(f"rename tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
         #exit()
+
+    def print_orientation(self):
+        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+        orientation = basePositionAndOrientation[1]
+        orientationEuler = p.getEulerFromQuaternion(orientation)
+        print(orientationEuler)

@@ -2,12 +2,14 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
+import pybullet as p
 
 class PARALLEL_HILL_CLIMBER:
     
     def __init__(self):
         os.system("del brain*.nndf")
         os.system("del fitness*.txt")
+        os.system("del robot*.urdf")
         self.parents = {}
         self.nextAvailableID = 0
         for x in range(c.populationSize):
@@ -55,11 +57,12 @@ class PARALLEL_HILL_CLIMBER:
         for key in self.parents:
             if self.parents[key].fitness <= self.parents[best_key].fitness:
                 best_key = key
-        self.parents[best_key].Start_Simulation("GUI")
+        
+        self.parents[best_key].Start_Simulation("GUI", "t")
 
     def Evaluate(self, solutions):
         for key in solutions:
-            solutions[key].Start_Simulation("DIRECT")
+            solutions[key].Start_Simulation("DIRECT", "f")
 
         for key in solutions:
             solutions[key].Wait_For_Simulation_To_End()

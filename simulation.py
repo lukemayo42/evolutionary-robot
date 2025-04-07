@@ -6,6 +6,7 @@ import pybullet as p
 import pybullet_data
 import time
 import pyrosim.pyrosim as pyrosim
+import constants as c
 
 class SIMULATION:
     def __init__(self, directOrGUI, solutionID):
@@ -14,7 +15,7 @@ class SIMULATION:
         self.robot = ROBOT(solutionID)
         
     def Run(self):
-        for i in range(0, 1000):
+        for i in range(0, c.timeSteps):
             if self.directOrGUI == "GUI":
                 time.sleep((1/60))
             p.stepSimulation()
