@@ -8,12 +8,12 @@ frontLegAmplitude = np.pi/6
 frontLegFrequency = 9
 frontLegPhaseOffset = 0
 
-numberOfGenerations = 20
-populationSize = 15
+numberOfGenerations = 1
+populationSize = 1
 
 numSensorNeurons = 5
 numMotorNeurons = 8
 
 motorJointRange = 0.3
 
-timeSteps = 8000
+timeSteps = 1000
