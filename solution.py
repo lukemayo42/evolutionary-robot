@@ -21,8 +21,6 @@ class SOLUTION:
         print(f"LeftLeg upper length: {self.upperLegWeights[3]}")
         self.myID = myID
 
-    def Evaluate(self, value):
-        pass
 
     def Start_Simulation(self, value, print):
         self.Generate_Body()
@@ -102,14 +100,25 @@ class SOLUTION:
         pyrosim.End()
 
     def Mutate(self):
-        threshold = c.numSensorNeurons / (c.numSensorNeurons + 4)
+        threshold = c.numSensorNeurons / (c.numSensorNeurons + 8)
         value = random.random()
+        # evolve the synaptic weights
         if threshold < value:
             row = random.randint(0,c.numSensorNeurons - 1)
             column = random.randint(0, c.numMotorNeurons - 1)
             self.weights[row, column] = random.random() * (c.numSensorNeurons - 1) - (c.numMotorNeurons - 1)
+        # evolve the length of the legs
         else:
-            index = random.randrange(0, 4)
-            self.lowerLegWeights[index] = random.random() + 1.5
+            # flip a coin
+            coin = random.randrange(0, 2)
+            if coin == 1:
+                index = random.randrange(0, 4)
+                self.lowerLegWeights[index] = random.random() + 1.5
+            else:
+                index = random.randrange(0, 4)
+                self.upperLegWeights[index] = random.random() + 1.5
+            
+
+        # evolve the length of the upper legs
     def Set_ID(self, ID):
         self.myID = ID

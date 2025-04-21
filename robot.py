@@ -8,6 +8,7 @@ import os
 import time
 import constants as c
 import numpy as np
+import math
 
 class ROBOT:
     def __init__(self, solutionID):
@@ -59,7 +60,7 @@ class ROBOT:
         for i in self.sensors["Torso"].values:
             if i == 1:
                 torso_penalty = 5
-                
+        
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
         basePosition = basePositionAndOrientation[0]
         orientation = basePositionAndOrientation[1]
@@ -70,16 +71,28 @@ class ROBOT:
 
 
         roll_penalty = 0
-        if abs(roll) > .7:
-            roll_penalty = 5
+        # punish high angulation
+        # use exp scale to punish high angles
+        alpha = 2
+        #roll_penalty = math.exp(alpha * abs(roll))
         pitch_penalty = 0
-        if abs(pitch) > .7:
-            pitch_penalty = 5
+        #pitch_penalty = math.exp(alpha * abs(pitch))
+
+
+        # punish lower legs dragging on the ground
+        # get all the states of the lower leg
+        lower_leg_penalty = 0
+        for i in range(4, 8):
+            lower_leg_info =  p.getLinkState(self.robotId, i)
+            lower_leg_orientation = p.getEulerFromQuaternion(lower_leg_info[1])
+            print(lower_leg_orientation)
+            if (abs(lower_leg_orientation[0]) > 1.55 and abs(lower_leg_orientation[0]) < 1.55) or abs(lower_leg_orientation[1]) > 1.55 and abs(lower_leg_orientation[1]) < 1.56:
+                lower_leg_penalty = 10
         #minimize this function, the xPosition of the robot, add 100 if the torso sensor ever goes off, meaning that it touches the ground at any point
         # because if this is the case the robot has likely flipped over.
-        fitness = xPosition + torso_penalty + roll_penalty + pitch_penalty
+        fitness = xPosition + torso_penalty + roll_penalty + pitch_penalty + lower_leg_penalty
 
-        # punish high angulation
+        
         #print(xCoordinateOfLinkZero)
         f = open(f"tmp{self.solutionID}.txt", "w")
         f.write(str(fitness))
