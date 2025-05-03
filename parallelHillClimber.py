@@ -3,31 +3,39 @@ import constants as c
 import copy
 import os
 import pybullet as p
+import numpy as np
 
 class PARALLEL_HILL_CLIMBER:
     
-    def __init__(self):
+    def __init__(self, version):
         os.system("del brain*.nndf")
         os.system("del fitness*.txt")
         os.system("del robot*.urdf")
+        self.version = version
         self.parents = {}
         self.nextAvailableID = 0
         for x in range(c.populationSize):
-            self.parents[x] = SOLUTION(self.nextAvailableID)
+            self.parents[x] = SOLUTION(self.nextAvailableID, self.version, x)
             self.nextAvailableID+=1
+        
+        self.data = np.zeros((c.populationSize, c.numberOfGenerations))
+
+
 
     def Evolve(self):
         self.Evaluate(self.parents)
 
         for currentGeneration in range(c.numberOfGenerations):
-            self.Evolve_For_One_Generation()
+            self.Evolve_For_One_Generation(currentGeneration)
 
-    def Evolve_For_One_Generation(self):
+    def Evolve_For_One_Generation(self, genNum):
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
         self.Print()
         self.Select()
+        for key in self.parents:
+            self.data[key, genNum] = self.parents[key].fitness
 
 
     def Spawn(self):
@@ -48,6 +56,7 @@ class PARALLEL_HILL_CLIMBER:
             if self.parents[key].fitness > self.children[key].fitness:
                 self.parents[key] = self.children[key]
 
+
     def Print(self):
         for key in self.parents:
             print(f"\nparent:{self.parents[key].fitness}, child:{self.children[key].fitness}\n")
@@ -66,3 +75,7 @@ class PARALLEL_HILL_CLIMBER:
 
         for key in solutions:
             solutions[key].Wait_For_Simulation_To_End()
+            #self.data[key, genNum] = solutions[key].fitness
+
+    def save_data(self):
+        np.savetxt("data.npy", self.data)

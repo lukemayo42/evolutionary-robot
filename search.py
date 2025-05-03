@@ -2,10 +2,18 @@ import os
 from parallelHillClimber import PARALLEL_HILL_CLIMBER
 
 
-phc = PARALLEL_HILL_CLIMBER()
+phca = PARALLEL_HILL_CLIMBER("b")
 
-phc.Evolve()
-phc.Show_Best()
+phca.Evolve()
+phca.Show_Best()
+phca.save_data()
+
+"""
+phcb = PARALLEL_HILL_CLIMBER("b")
+phcb.Evolve()
+phcb.Show_Best()
+"""
+
 '''
 for i in range(5):
     os.system("python generate.py")

@@ -85,8 +85,8 @@ class ROBOT:
         for i in range(4, 8):
             lower_leg_info =  p.getLinkState(self.robotId, i)
             lower_leg_orientation = p.getEulerFromQuaternion(lower_leg_info[1])
-            print(lower_leg_orientation)
-            if (abs(lower_leg_orientation[0]) > 1.55 and abs(lower_leg_orientation[0]) < 1.55) or abs(lower_leg_orientation[1]) > 1.55 and abs(lower_leg_orientation[1]) < 1.56:
+            if (abs(lower_leg_orientation[0]) > 1.5 and abs(lower_leg_orientation[0]) < 1.6) or (abs(lower_leg_orientation[1]) > 1.5 and abs(lower_leg_orientation[1]) < 1.6):
+                print(lower_leg_orientation)
                 lower_leg_penalty = 10
         #minimize this function, the xPosition of the robot, add 100 if the torso sensor ever goes off, meaning that it touches the ground at any point
         # because if this is the case the robot has likely flipped over.

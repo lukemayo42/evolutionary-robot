@@ -16,4 +16,4 @@ numMotorNeurons = 8
 
 motorJointRange = 0.4
 
-timeSteps = 5000
+timeSteps = 3000

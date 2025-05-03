@@ -6,20 +6,18 @@ import time
 import constants as c
 
 class SOLUTION:
-    def __init__(self, myID):
+    def __init__(self, myID, version, popNum):
         self.weights = np.random.rand(c.numSensorNeurons, c.numMotorNeurons) * 2 -1
         # 4 legs, vary from 2 - 3
+        self.version = version
         self.lowerLegWeights = np.random.rand(4) + 1.5
-        self.upperLegWeights = np.random.rand(4) + 1.5
-        print(f"BackLeg lower length: {self.lowerLegWeights[0]}")
-        print(f"FrontLeg lower length: {self.lowerLegWeights[1]}")
-        print(f"RightLeg lower length: {self.lowerLegWeights[2]}")
-        print(f"LeftLeg lower length: {self.lowerLegWeights[3]}")
-        print(f"BackLeg upper length: {self.upperLegWeights[0]}")
-        print(f"FrontLeg upper length: {self.upperLegWeights[1]}")
-        print(f"RightLeg upper length: {self.upperLegWeights[2]}")
-        print(f"LeftLeg upper length: {self.upperLegWeights[3]}")
+        if self.version == "b":
+            self.upperLegWeights = np.random.rand(4) + 1.5
+        else:
+            self.upperLegWeights = [1, 1, 1, 1]
+
         self.myID = myID
+        self.popNum = popNum
 
 
     def Start_Simulation(self, value, print):
@@ -100,23 +98,33 @@ class SOLUTION:
         pyrosim.End()
 
     def Mutate(self):
-        threshold = c.numSensorNeurons / (c.numSensorNeurons + 8)
+        threshold = c.numSensorNeurons / (c.numSensorNeurons + 4)
+        if self.version == "b":
+            threshold = c.numSensorNeurons / (c.numSensorNeurons + 8)
         value = random.random()
         # evolve the synaptic weights
         if threshold < value:
             row = random.randint(0,c.numSensorNeurons - 1)
             column = random.randint(0, c.numMotorNeurons - 1)
             self.weights[row, column] = random.random() * (c.numSensorNeurons - 1) - (c.numMotorNeurons - 1)
+            print("synapse")
         # evolve the length of the legs
         else:
-            # flip a coin
-            coin = random.randrange(0, 2)
-            if coin == 1:
-                index = random.randrange(0, 4)
-                self.lowerLegWeights[index] = random.random() + 1.5
+            if self.version == "b":
+                # flip a coim
+                coin = random.randrange(0, 2)
+                if coin == 1:
+                    index = random.randrange(0, 4)
+                    self.lowerLegWeights[index] = random.random() + 1.5
+                    print("lowerleg")
+                else:
+                    index = random.randrange(0, 4)
+                    self.upperLegWeights[index] = random.random() + 1.5
+                    print("upperleg")
             else:
                 index = random.randrange(0, 4)
-                self.upperLegWeights[index] = random.random() + 1.5
+                self.lowerLegWeights[index] = random.random() + 1.5
+                print("lowerleg")
             
 
         # evolve the length of the upper legs
