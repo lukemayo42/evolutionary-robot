@@ -35,7 +35,8 @@ class PARALLEL_HILL_CLIMBER:
         self.Print()
         self.Select()
         for key in self.parents:
-            self.data[key, genNum] = self.parents[key].fitness
+            print(self.parents[key].get_fitness())
+            self.data[key, genNum] = self.parents[key].get_fitness()
 
 
     def Spawn(self):
@@ -77,5 +78,5 @@ class PARALLEL_HILL_CLIMBER:
             solutions[key].Wait_For_Simulation_To_End()
             #self.data[key, genNum] = solutions[key].fitness
 
-    def save_data(self):
-        np.savetxt("data.npy", self.data)
+    def save_data(self, name):
+        np.save(name, self.data)

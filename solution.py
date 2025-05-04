@@ -127,6 +127,9 @@ class SOLUTION:
                 print("lowerleg")
             
 
-        # evolve the length of the upper legs
+        
     def Set_ID(self, ID):
         self.myID = ID
+
+    def get_fitness(self):
+        return self.fitness
